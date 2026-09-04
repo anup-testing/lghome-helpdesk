@@ -709,4 +709,12 @@ textarea {
   .lede {
     max-width: none;
   }
+
+  .call-btn {
+    display: none;
+  }
+
+  .cert-card {
+    display: none;
+  }
 }
