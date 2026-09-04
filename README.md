@@ -4,6 +4,14 @@ A customer-facing support portal for **LG Home Comfort** (HVAC/home-services com
 built on top of **Frappe Helpdesk**. Customers register concerns, track ticket status,
 and leave feedback without ever touching the Frappe desk UI.
 
+![Landing Page](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
 ## Architecture
 
 ```
