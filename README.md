@@ -1,4 +1,4 @@
-# LG Home Comfort — Customer Care Portal
+# LG Home Comfort - Customer Care Portal
 
 A customer-facing support portal for **LG Home Comfort** (HVAC/home-services company)
 built on top of **Frappe Helpdesk**. Customers register concerns, track ticket status,
@@ -28,12 +28,12 @@ Frappe Helpdesk (Docker, :8000)
   └─ HD Ticket doctype (+ custom fields)
 ```
 
-- **Frappe** is the system of record — every ticket, status, and feedback rating
+- **Frappe** is the system of record - every ticket, status, and feedback rating
   lives on the `HD Ticket` doctype.
 - **portal-backend** is a thin, stateless proxy. It never stores anything itself;
   it just translates simple REST calls into authenticated Frappe API calls.
 - **portal-frontend** is the only thing an end customer ever sees. It never talks
-  to Frappe directly — only to `portal-backend`.
+  to Frappe directly - only to `portal-backend`.
 
 Sub-project docs:
 - [`portal-backend/README.md`](portal-backend/README.md)
@@ -65,30 +65,30 @@ docker compose logs -f frappe   # watch it come up
 - Admin desk: http://localhost:8000/app
 
 If the container was stopped (e.g. after a reboot), bring it back with
-`docker compose start` — no need to re-run `docker compose up` unless you want
+`docker compose start` - no need to re-run `docker compose up` unless you want
 to rebuild.
 
 ### Required custom fields on `HD Ticket`
 
-The portal writes to these fields — they must exist before `portal-backend` can
+The portal writes to these fields - they must exist before `portal-backend` can
 create tickets successfully. Add via `http://localhost:8000/app/custom-field/new`
 (set **Document Type** = `HD Ticket` each time):
 
 | Label | Field name (auto-generated) | Type | Options |
 |---|---|---|---|
-| Mobile | `custom_mobile` | Data | — |
-| City | `custom_city` | Data | — |
-| Invoice No | `custom_invoice_no` | Data | — |
+| Mobile | `custom_mobile` | Data | - |
+| City | `custom_city` | Data | - |
+| Invoice No | `custom_invoice_no` | Data | - |
 | Service Type | `custom_service_type` | Select | `Heating`, `Cooling`, `Water Solutions`, `Air Quality`, `Generators`, `Security`, `Other` |
-| Escalation Reason | `custom_escalation_reason` | Small Text | — |
+| Escalation Reason | `custom_escalation_reason` | Small Text | - |
 
-⚠️ Make sure the **Label** has no leading/trailing space — Frappe derives the
+⚠️ Make sure the **Label** has no leading/trailing space - Frappe derives the
 fieldname from it, and a stray space produces a broken fieldname like
 `custom__city` (double underscore) that silently fails to save.
 
 Feedback (star rating + comment) uses fields Frappe Helpdesk already ships with:
 `feedback_rating` (Rating, stored as a 0–1 fraction) and `feedback_extra` (Long
-Text, free-form comment). Do **not** write to the `feedback` field — it's a Link
+Text, free-form comment). Do **not** write to the `feedback` field - it's a Link
 field restricted to a predefined list of canned phrases (`HD Ticket Feedback
 Option`), not free text.
 
