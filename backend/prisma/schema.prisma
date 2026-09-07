@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  TECHNICIAN
+  DISPATCHER
+  ADMIN
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  SCHEDULED
+  COMPLETED
+  CLOSED
+  CANCELLED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ServiceType {
+  HEATING
+  COOLING
+  WATER_SOLUTIONS
+  AIR_QUALITY
+  GENERATORS
+  SECURITY
+  OTHER
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum WorkOrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  VOID
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  CASH
+  CHEQUE
+  BANK_TRANSFER
+  OTHER
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String?
+  role          Role
+  name          String
+  phone         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  customer      Customer?
+  technician    Technician?
+  notifications Notification[]
+  uploadedFiles File[]
+}
+
+model Customer {
+  id         String     @id @default(cuid())
+  userId     String     @unique
+  user       User       @relation(fields: [userId], references: [id])
+  company    String?
+  properties Property[]
+  tickets    Ticket[]
+  invoices   Invoice[]
+  createdAt  DateTime   @default(now())
+}
+
+model Technician {
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  skills       String[]
+  tickets      Ticket[]      @relation("AssignedTechnician")
+  appointments Appointment[]
+  workOrders   WorkOrder[]
+  createdAt    DateTime      @default(now())
+}
+
+model Property {
+  id         String      @id @default(cuid())
+  customerId String
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  address    String
+  city       String
+  province   String?
+  postalCode String?
+  equipment  Equipment[]
+  tickets    Ticket[]
+  createdAt  DateTime    @default(now())
+}
+
+model Equipment {
+  id           String    @id @default(cuid())
+  propertyId   String
+  property     Property  @relation(fields: [propertyId], references: [id])
+  type         String
+  model        String?
+  serialNumber String?
+  installedAt  DateTime?
+  tickets      Ticket[]
+  createdAt    DateTime  @default(now())
+}
+
+model Ticket {
+  id           String         @id @default(cuid())
+  ticketNumber Int            @unique @default(autoincrement())
+  customerId   String
+  customer     Customer       @relation(fields: [customerId], references: [id])
+  propertyId   String?
+  property     Property?      @relation(fields: [propertyId], references: [id])
+  equipmentId  String?
+  equipment    Equipment?     @relation(fields: [equipmentId], references: [id])
+  technicianId String?
+  technician   Technician?    @relation("AssignedTechnician", fields: [technicianId], references: [id])
+  title        String
+  description  String
+  serviceType  ServiceType
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
+  feedbackRating  Int?
+  feedbackComment String?
+  appointments Appointment[]
+  workOrders   WorkOrder[]
+  invoices     Invoice[]
+  files        File[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Appointment {
+  id             String            @id @default(cuid())
+  ticketId       String
+  ticket         Ticket            @relation(fields: [ticketId], references: [id])
+  technicianId   String
+  technician     Technician        @relation(fields: [technicianId], references: [id])
+  scheduledStart DateTime
+  scheduledEnd   DateTime
+  status         AppointmentStatus @default(SCHEDULED)
+  createdAt      DateTime          @default(now())
+}
+
+model WorkOrder {
+  id           String          @id @default(cuid())
+  ticketId     String
+  ticket       Ticket          @relation(fields: [ticketId], references: [id])
+  technicianId String
+  technician   Technician      @relation(fields: [technicianId], references: [id])
+  notes        String?
+  status       WorkOrderStatus @default(PENDING)
+  partsUsed    WorkOrderPart[]
+  files        File[]
+  completedAt  DateTime?
+  createdAt    DateTime        @default(now())
+}
+
+model Part {
+  id        String          @id @default(cuid())
+  name      String
+  sku       String          @unique
+  quantity  Int             @default(0)
+  unitCost  Decimal         @db.Decimal(10, 2)
+  usedIn    WorkOrderPart[]
+  createdAt DateTime        @default(now())
+}
+
+model WorkOrderPart {
+  id          String    @id @default(cuid())
+  workOrderId String
+  workOrder   WorkOrder @relation(fields: [workOrderId], references: [id])
+  partId      String
+  part        Part      @relation(fields: [partId], references: [id])
+  quantity    Int
+}
+
+model Invoice {
+  id         String        @id @default(cuid())
+  ticketId   String
+  ticket     Ticket        @relation(fields: [ticketId], references: [id])
+  customerId String
+  customer   Customer      @relation(fields: [customerId], references: [id])
+  amount     Decimal       @db.Decimal(10, 2)
+  status     InvoiceStatus @default(DRAFT)
+  dueDate    DateTime?
+  payments   Payment[]
+  createdAt  DateTime      @default(now())
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  invoiceId String
+  invoice   Invoice       @relation(fields: [invoiceId], references: [id])
+  amount    Decimal       @db.Decimal(10, 2)
+  method    PaymentMethod
+  status    PaymentStatus @default(PENDING)
+  paidAt    DateTime?
+  createdAt DateTime      @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model File {
+  id           String     @id @default(cuid())
+  ticketId     String?
+  ticket       Ticket?    @relation(fields: [ticketId], references: [id])
+  workOrderId  String?
+  workOrder    WorkOrder? @relation(fields: [workOrderId], references: [id])
+  uploadedById String
+  uploadedBy   User       @relation(fields: [uploadedById], references: [id])
+  filename     String
+  url          String
+  mimeType     String?
+  createdAt    DateTime   @default(now())
+}
