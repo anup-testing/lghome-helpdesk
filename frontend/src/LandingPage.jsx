@@ -38,14 +38,6 @@ export default function LandingPage() {
                 alt="LG Home Comfort product lineup - heat pump, tankless water heater, water softener and smart thermostat."
               />
             </div>
-
-            <div className="cert-card">
-              <span className="ic" aria-hidden="true">🔧</span>
-              <span>
-                <span className="t">Licensed &amp; Certified</span>
-                <span className="s">Technicians</span>
-              </span>
-            </div>
           </div>
         </div>
       </main>
