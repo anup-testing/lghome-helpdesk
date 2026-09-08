@@ -37,24 +37,6 @@ export default function LandingPage() {
       <main className="hero">
         <div className="wrap hero-grid">
           <div>
-            <div className="rating">
-              <span className="stars" aria-hidden="true">★★★★★</span>
-              <b>4.6</b>
-              <span>· 2,800+ happy reviews</span>
-            </div>
-
-            <h1>Customer Care <span className="accent">Portal</span></h1>
-            <p className="lede">Your comfort, our promise - one friendly call away, day or night.</p>
-
-            <div className="actions">
-              {ACTIONS.map(({ key, to, title, subtitle }) => (
-                <Link key={key} className="action" data-panel={key} to={to}>
-                  <span className="t">{title}</span>
-                  <span className="s">{subtitle}</span>
-                </Link>
-              ))}
-            </div>
-
             <div className="contact-row">
               <button className="contact" type="button" onClick={() => copyValue('1-866-438-5442')}>
                 <span className="ic" aria-hidden="true">
@@ -80,6 +62,18 @@ export default function LandingPage() {
                   <span className="val">support@lghomecomfort.ca</span>
                 </span>
               </button>
+            </div>
+
+            <h1>Customer Care <span className="accent">Portal</span></h1>
+            <p className="lede">Your comfort, our promise - one friendly call away, day or night.</p>
+
+            <div className="actions">
+              {ACTIONS.map(({ key, to, title, subtitle }) => (
+                <Link key={key} className="action" data-panel={key} to={to}>
+                  <span className="t">{title}</span>
+                  <span className="s">{subtitle}</span>
+                </Link>
+              ))}
             </div>
           </div>
 
