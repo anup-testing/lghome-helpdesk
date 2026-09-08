@@ -1,8 +1,14 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4100/api';
+const TOKEN_KEY = 'lgcare_token';
 
 async function request(path, options = {}) {
+  const token = localStorage.getItem(TOKEN_KEY);
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
     ...options,
   });
 
