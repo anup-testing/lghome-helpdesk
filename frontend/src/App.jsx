@@ -2,9 +2,11 @@ import { Route, Routes } from 'react-router-dom';
 
 import LandingPage from './LandingPage.jsx';
 import StaffLanding from './StaffLanding.jsx';
+import LoginPage from './LoginPage.jsx';
 import ReportPage from './ReportPage.jsx';
 import TrackPage from './TrackPage.jsx';
 import FeedbackPage from './FeedbackPage.jsx';
+import RequireAuth from './components/RequireAuth.jsx';
 import CustomerLayout from './portals/customer/CustomerLayout.jsx';
 import CustomerDashboard from './portals/customer/pages/Dashboard.jsx';
 import CustomerTicketDetails from './portals/customer/pages/TicketDetails.jsx';
@@ -36,18 +38,33 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/staff" element={<StaffLanding />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/report" element={<ReportPage />} />
       <Route path="/track" element={<TrackPage />} />
       <Route path="/feedback" element={<FeedbackPage />} />
 
-      <Route path="/customer" element={<CustomerLayout />}>
+      <Route
+        path="/customer"
+        element={
+          <RequireAuth roles={['CUSTOMER']}>
+            <CustomerLayout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<CustomerDashboard />} />
         <Route path="tickets/:id" element={<CustomerTicketDetails />} />
         <Route path="appointments" element={<CustomerAppointments />} />
         <Route path="invoices" element={<CustomerInvoices />} />
       </Route>
 
-      <Route path="/technician" element={<TechnicianLayout />}>
+      <Route
+        path="/technician"
+        element={
+          <RequireAuth roles={['TECHNICIAN']}>
+            <TechnicianLayout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<TechnicianDashboard />} />
         <Route path="jobs/today" element={<TechnicianTodaysJobs />} />
         <Route path="tickets" element={<TechnicianAssignedTickets />} />
@@ -56,7 +73,14 @@ export default function App() {
         <Route path="history" element={<TechnicianServiceHistory />} />
       </Route>
 
-      <Route path="/dispatcher" element={<DispatcherLayout />}>
+      <Route
+        path="/dispatcher"
+        element={
+          <RequireAuth roles={['DISPATCHER']}>
+            <DispatcherLayout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<DispatcherDashboard />} />
         <Route path="tickets" element={<DispatcherAllTickets />} />
         <Route path="tickets/:id/assign" element={<DispatcherAssignTechnician />} />
@@ -64,7 +88,14 @@ export default function App() {
         <Route path="customers" element={<DispatcherCustomers />} />
       </Route>
 
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route
+        path="/admin"
+        element={
+          <RequireAuth roles={['ADMIN']}>
+            <AdminLayout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<AdminUsers />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="technicians" element={<AdminTechnicians />} />

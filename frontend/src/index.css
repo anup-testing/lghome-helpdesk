@@ -132,10 +132,31 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
+.shell-topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .shell-user-badge {
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-soft);
+}
+
+.shell-logout {
+  background: none;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.shell-logout:hover {
+  border-color: var(--cyan);
+  color: var(--ink);
 }
 
 .shell-main {
