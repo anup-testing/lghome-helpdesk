@@ -45,7 +45,7 @@ export default function PortalShell({ title, links }) {
           </div>
         </header>
         <main className="shell-main">
-          <div className="panel">
+          <div className="shell-content">
             <Outlet />
           </div>
         </main>

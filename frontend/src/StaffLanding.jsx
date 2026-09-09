@@ -9,12 +9,6 @@ const PORTALS = [
     description: "See today's jobs, open a work order, and log completed service.",
   },
   {
-    to: '/dispatcher',
-    tag: 'Dispatcher',
-    title: 'Dispatcher Portal',
-    description: 'Triage incoming tickets, assign technicians, and manage the schedule.',
-  },
-  {
     to: '/admin',
     tag: 'Admin',
     title: 'Admin Portal',

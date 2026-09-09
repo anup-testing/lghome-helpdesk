@@ -30,6 +30,7 @@ import AdminUsers from './portals/admin/pages/Users.jsx';
 import AdminTechnicians from './portals/admin/pages/Technicians.jsx';
 import AdminCustomers from './portals/admin/pages/Customers.jsx';
 import AdminTickets from './portals/admin/pages/Tickets.jsx';
+import AdminTicketDetails from './portals/admin/pages/TicketDetails.jsx';
 import AdminSettings from './portals/admin/pages/Settings.jsx';
 import AdminBilling from './portals/admin/pages/Billing.jsx';
 
@@ -60,7 +61,7 @@ export default function App() {
       <Route
         path="/technician"
         element={
-          <RequireAuth roles={['TECHNICIAN']}>
+          <RequireAuth roles={['TECHNICIAN', 'ADMIN']}>
             <TechnicianLayout />
           </RequireAuth>
         }
@@ -101,6 +102,7 @@ export default function App() {
         <Route path="technicians" element={<AdminTechnicians />} />
         <Route path="customers" element={<AdminCustomers />} />
         <Route path="tickets" element={<AdminTickets />} />
+        <Route path="tickets/:id" element={<AdminTicketDetails />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="billing" element={<AdminBilling />} />
       </Route>

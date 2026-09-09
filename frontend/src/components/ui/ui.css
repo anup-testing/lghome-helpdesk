@@ -1,0 +1,109 @@
+.ui-page-header,
+.ui-page-header h2,
+.ui-page-header p,
+.ui-button,
+.ui-badge {
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
+
+.ui-button {
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  font: inherit;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 20px;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+}
+
+.ui-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ui-button-primary {
+  background: var(--color-cyan);
+  box-shadow: 0 3px 0 var(--color-cyan-dark);
+  color: var(--color-white);
+}
+
+.ui-button-primary:hover:not(:disabled) {
+  background: var(--color-cyan-dark);
+}
+
+.ui-button-secondary {
+  background: var(--color-white);
+  border: 1.5px solid var(--color-line);
+  color: var(--color-ink-soft);
+}
+
+.ui-button-secondary:hover:not(:disabled) {
+  border-color: var(--color-cyan);
+  color: var(--color-ink);
+}
+
+.ui-button-ghost {
+  background: transparent;
+  color: var(--color-cyan-dark);
+  padding-inline: 0;
+}
+
+.ui-button-ghost:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.ui-badge {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 4px 9px;
+}
+
+.ui-badge-status-open { background: var(--color-cyan-tint); color: var(--color-cyan-dark); }
+.ui-badge-status-in_progress,
+.ui-badge-status-scheduled { background: var(--color-lilac-tint); color: #5b3f86; }
+.ui-badge-status-completed,
+.ui-badge-status-closed { background: #e5f5e9; color: #287344; }
+.ui-badge-status-cancelled { background: #fde7e7; color: #a33445; }
+.ui-badge-priority-low { background: #eef3f5; color: var(--color-ink-soft); }
+.ui-badge-priority-medium { background: var(--color-peach); color: #9c5a24; }
+.ui-badge-priority-high,
+.ui-badge-priority-urgent { background: #fde7e7; color: #a33445; }
+
+.ui-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.ui-page-header {
+  margin-bottom: 28px;
+}
+
+.ui-page-header h2 {
+  color: var(--color-ink);
+  font-size: var(--text-xl);
+  font-weight: 750;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+}
+
+.ui-page-header p {
+  color: var(--color-ink-soft);
+  font-size: var(--text-md);
+  line-height: 1.45;
+  margin: 0;
+  max-width: 60ch;
+}

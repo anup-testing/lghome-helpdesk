@@ -79,7 +79,21 @@ export async function getById(idOrNumber) {
 }
 
 export async function create(data) {
-  let { customerId, propertyId, equipmentId, title, description, serviceType, priority } = data;
+  let {
+    customerId,
+    propertyId,
+    equipmentId,
+    title,
+    description,
+    serviceType,
+    priority,
+    address,
+    city,
+    province,
+    postalCode,
+    attachment,
+  } = data;
+  let uploadedById;
 
   if (!customerId) {
     const { firstName, lastName, email, phone, message } = data;
@@ -87,6 +101,7 @@ export async function create(data) {
 
     const customer = await findOrCreateGuestCustomer({ firstName, lastName, email, phone });
     customerId = customer.id;
+    uploadedById = customer.userId;
     description = description ?? message;
     title =
       title ??
@@ -96,6 +111,13 @@ export async function create(data) {
   const serviceTypeEnum = toServiceTypeEnum(serviceType);
   if (!serviceTypeEnum) throw badRequestError('serviceType is required and must be a valid service type');
   if (!description) throw badRequestError('description is required');
+
+  if (!propertyId && address && city) {
+    const property = await prisma.property.create({
+      data: { customerId, address, city, province: province || undefined, postalCode: postalCode || undefined },
+    });
+    propertyId = property.id;
+  }
 
   const ticket = await prisma.ticket.create({
     data: {
@@ -109,6 +131,24 @@ export async function create(data) {
     },
     include: TICKET_INCLUDE,
   });
+
+  if (attachment?.filename && attachment?.url) {
+    if (!uploadedById) {
+      const customer = await prisma.customer.findUnique({ where: { id: customerId }, select: { userId: true } });
+      uploadedById = customer?.userId;
+    }
+    if (!uploadedById) throw badRequestError('A valid customer is required for attachments');
+    await prisma.file.create({
+      data: {
+        ticketId: ticket.id,
+        uploadedById,
+        filename: attachment.filename,
+        url: attachment.url,
+        mimeType: attachment.mimeType || undefined,
+      },
+    });
+  }
+
   return serializeTicket(ticket);
 }
 
