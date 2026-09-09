@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PageHeader from '../../../components/PageHeader.jsx';
 import EmptyState from '../../../components/EmptyState.jsx';
 import { useApiList } from '../../../lib/useApiList.js';
@@ -73,12 +74,16 @@ export default function Tickets() {
             <tbody>
               {tickets.map((ticket) => (
                 <tr key={ticket.id}>
-                  <td>{formatTicketNumber(ticket.ticketNumber)}</td>
+                  <td>
+                    <Link className="ticket-reference" to={`/admin/tickets/${ticket.id}`}>
+                      {formatTicketNumber(ticket.ticketNumber)}
+                    </Link>
+                  </td>
                   <td>{ticket.title}</td>
                   <td>{ticket.customer?.user?.name ?? '-'}</td>
                   <td>{ticket.serviceType}</td>
-                  <td>{ticket.status}</td>
-                  <td>{ticket.priority}</td>
+                  <td><span className={`status-badge status-${ticket.status.toLowerCase()}`}>{ticket.status}</span></td>
+                  <td><span className={`priority-badge priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span></td>
                   <td>
                     <select
                       value={ticket.technicianId ?? ''}

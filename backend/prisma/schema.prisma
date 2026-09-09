@@ -92,6 +92,7 @@ model User {
   technician    Technician?
   notifications Notification[]
   uploadedFiles File[]
+  ticketMessages TicketMessage[]
 }
 
 model Customer {
@@ -163,6 +164,7 @@ model Ticket {
   workOrders   WorkOrder[]
   invoices     Invoice[]
   files        File[]
+  messages     TicketMessage[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 }
@@ -258,4 +260,14 @@ model File {
   url          String
   mimeType     String?
   createdAt    DateTime   @default(now())
+}
+
+model TicketMessage {
+  id        String   @id @default(cuid())
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
 }

@@ -1,7 +1,7 @@
 import PortalShell from '../../components/PortalShell.jsx';
 
 const links = [
-  { to: "users", label: "Users", end: true },
+
   { to: "technicians", label: "Technicians", end: false },
   { to: "customers", label: "Customers", end: false },
   { to: "tickets", label: "Tickets", end: false },

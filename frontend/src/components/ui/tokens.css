@@ -1,0 +1,39 @@
+:root {
+  --color-ink: #123a4d;
+  --color-ink-soft: #4a6b7a;
+  --color-cyan: #19b0d8;
+  --color-cyan-dark: #1592b3;
+  --color-cyan-tint: #e3f6fc;
+  --color-lilac-tint: #f3ebfd;
+  --color-peach: #fde7d6;
+  --color-cream: #fdf8ef;
+  --color-line: #e8e1d3;
+  --color-white: #fff;
+  --radius-sm: 9px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 10px rgba(18, 58, 77, 0.06);
+  --shadow-md: 0 8px 24px rgba(18, 58, 77, 0.07);
+  --font-body: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 28px;
+
+  /* Legacy aliases keep existing screens on the same token source. */
+  --ink: var(--color-ink);
+  --ink-soft: var(--color-ink-soft);
+  --cyan: var(--color-cyan);
+  --cyan-dark: var(--color-cyan-dark);
+  --cyan-tint: var(--color-cyan-tint);
+  --lilac: #ead9fb;
+  --lilac-dark: #cdb2ef;
+  --lilac-tint: var(--color-lilac-tint);
+  --peach: var(--color-peach);
+  --cream: var(--color-cream);
+  --line: var(--color-line);
+  --white: var(--color-white);
+  --radius: var(--radius-lg);
+  --shadow: var(--shadow-sm);
+}
