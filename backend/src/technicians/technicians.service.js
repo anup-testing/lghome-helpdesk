@@ -1,6 +1,6 @@
 import { prisma } from '../config/prisma.js';
 import { badRequestError, notFoundError } from '../utils/errors.js';
-import { getOrCreateByEmail, serializeUser } from '../users/users.service.js';
+import { findByEmail, hashPassword, serializeUser } from '../users/users.service.js';
 
 function serializeTechnician(technician) {
   if (!technician) return technician;
@@ -25,12 +25,22 @@ export async function getById(id) {
 }
 
 export async function create(data) {
-  const { userId, email, name, phone, skills = [] } = data;
+  const { userId, email, name, phone, password, skills = [] } = data;
 
   let resolvedUserId = userId;
   if (!resolvedUserId) {
-    if (!email || !name) throw badRequestError('email and name are required to create a technician');
-    const user = await getOrCreateByEmail({ email, name, phone, role: 'TECHNICIAN' });
+    if (!email || !name || !password) throw badRequestError('email, name and password are required to create a technician');
+    const existing = await findByEmail(email);
+    if (existing) throw badRequestError('A user with that email already exists');
+    const user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        phone,
+        role: 'TECHNICIAN',
+        passwordHash: await hashPassword(password),
+      },
+    });
     resolvedUserId = user.id;
   }
 

@@ -97,7 +97,7 @@ export default function App() {
           </RequireAuth>
         }
       >
-        <Route index element={<AdminUsers />} />
+        <Route index element={<AdminTickets />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="technicians" element={<AdminTechnicians />} />
         <Route path="customers" element={<AdminCustomers />} />

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
+    "db:local": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/lgcare?schema=public DIRECT_URL=postgresql://postgres:postgres@localhost:5432/lgcare?schema=public prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
