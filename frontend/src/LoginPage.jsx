@@ -20,7 +20,12 @@ export default function LoginPage() {
     try {
       const user = await login(email, password);
       const from = location.state?.from?.pathname;
-      navigate(from ?? PORTAL_HOME[user.role] ?? '/', { replace: true });
+      // Administrators always start from the ticket-management home instead of
+      // returning to an individual user's ticket detail page.
+      const destination = user.role === 'ADMIN'
+        ? `${PORTAL_HOME.ADMIN}/tickets`
+        : from ?? PORTAL_HOME[user.role] ?? '/';
+      navigate(destination, { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {

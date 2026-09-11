@@ -16,9 +16,14 @@ scaffold, business logic still needs to be filled in module by module.
 ## Getting started
 
 ```bash
-docker compose up -d          # postgres on :5432
-cp .env.example .env
 npm install
-npx prisma migrate dev --name init
+cp .env.local.example .env.local
+docker compose up -d          # postgres on :5432
+npm run db:local              # apply migrations to the local lgcare database
 npm run dev                    # http://localhost:4100
 ```
+
+Copy `.env.local.example` to `.env.local` before starting the backend. `npm run
+dev` automatically uses that local configuration when it exists, so it takes
+precedence over any Supabase URL in `.env`. Use `npm run db:local` whenever you
+need to apply the checked-in Prisma migrations to your local database.

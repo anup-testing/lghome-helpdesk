@@ -11,6 +11,28 @@ const STATUSES = ['OPEN', 'IN_PROGRESS', 'SCHEDULED', 'COMPLETED', 'CLOSED', 'CA
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
 const MAX_IMAGE_SIZE = 20 * 1024;
 
+function formatEnumLabel(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function formatTicketDate(value) {
+  const date = new Date(value);
+  const day = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date);
+  const time = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
+  return `${day} · ${time}`;
+}
+
 export default function TicketDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -154,9 +176,9 @@ export default function TicketDetails() {
           <h3>Request</h3>
           <dl className="ticket-facts">
             <div><dt>Customer</dt><dd>{ticket.customer?.user?.name ?? '-'}</dd></div>
-            <div><dt>Service type</dt><dd>{ticket.serviceType}</dd></div>
-            <div><dt>Created</dt><dd>{new Date(ticket.createdAt).toLocaleString()}</dd></div>
-            <div><dt>Last updated</dt><dd>{new Date(ticket.updatedAt).toLocaleString()}</dd></div>
+            <div><dt>Service type</dt><dd>{formatEnumLabel(ticket.serviceType)}</dd></div>
+            <div><dt>Created</dt><dd><time dateTime={ticket.createdAt}>{formatTicketDate(ticket.createdAt)}</time></dd></div>
+            <div><dt>Last updated</dt><dd><time dateTime={ticket.updatedAt}>{formatTicketDate(ticket.updatedAt)}</time></dd></div>
           </dl>
           <div className="ticket-description">
             <h4>Description</h4>
@@ -177,13 +199,13 @@ export default function TicketDetails() {
           <div className="field">
             <label htmlFor="ticket-status">Status</label>
             <select id="ticket-status" value={ticket.status} onChange={(event) => updateField('status', event.target.value)}>
-              {STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
+              {STATUSES.map((status) => <option key={status} value={status}>{formatEnumLabel(status)}</option>)}
             </select>
           </div>
           <div className="field">
             <label htmlFor="ticket-priority">Priority</label>
             <select id="ticket-priority" value={ticket.priority} onChange={(event) => updateField('priority', event.target.value)}>
-              {PRIORITIES.map((priority) => <option key={priority} value={priority}>{priority}</option>)}
+              {PRIORITIES.map((priority) => <option key={priority} value={priority}>{formatEnumLabel(priority)}</option>)}
             </select>
           </div>
           <div className="field">

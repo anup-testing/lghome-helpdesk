@@ -119,7 +119,7 @@ export default function ReportPage() {
             <div className="form-steps" aria-label="Report steps">
               {STEPS.map((label, index) => {
                 const number = index + 1;
-                return <div key={label} className={`form-step${number === step ? ' is-active' : ''}${number < step ? ' is-complete' : ''}`}><span>{number < step ? '✓' : number}</span><strong>{label}</strong></div>;
+                return <div key={label} className={`form-step${number === step ? ' is-active' : ''}${number < step ? ' is-complete' : ''}`} aria-current={number === step ? 'step' : undefined}><span>{number < step ? '✓' : number}</span><strong>{label}</strong></div>;
               })}
             </div>
             <form onSubmit={handleSubmit} noValidate>
